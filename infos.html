@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Infos / Règles</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<style>
+.rules {
+  margin: 30px auto;
+  max-width: 900px;
+  background-color: #f0f8ff;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+  line-height: 1.7;
+}
+
+.rules h2, .rules h3 {
+  color: #00796b;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.rules ul li::before {
+  content: "🎯";
+  margin-right: 8px;
+}
+
+.table-poule {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.table-poule th, .table-poule td {
+  border: 2px solid #00796b;
+  padding: 10px;
+  font-weight: bold;
+}
+
+.table-poule th {
+  background-color: #26a69a;
+  color: white;
+}
+
+.arrow-down {
+  font-size: 1.2em;
+  color: red;
+}
+
+.arrow-up {
+  font-size: 1.2em;
+  color: green;
+}
+
+.playoffs {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.playoff-match {
+  background-color: #ff8f00;
+  color: white;
+  padding: 12px 18px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  min-width: 220px;
+}
+
+@media (max-width: 700px) {
+  .table-poule td, .table-poule th {
+    padding: 8px;
+    font-size: 0.9em;
+  }
+  .playoff-match {
+    min-width: 90%;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1><i class="fas fa-info-circle"></i> Infos / Règles</h1>
+  <nav>
+    <ul class="menu">
+      <li><a href="index.html"><i class="fas fa-home"></i> Accueil</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+<section class="rules">
+  <h2>Règles du Championnat</h2>
+  <p>Chaque match se joue en <strong>3 sets de 301 en sortie simple</strong>.</p>
+  <p>Il y a deux poules :</p>
+  <ul>
+    <li>Poule A : les meilleurs joueurs</li>
+    <li>Poule B : les autres joueurs</li>
+  </ul>
+  <p>À la fin de la phase de poules :</p>
+  <ul>
+    <li>Les deux derniers de Poule A descendent en B <span class="arrow-down">⬇️</span></li>
+    <li>Les deux premiers de Poule B montent en A <span class="arrow-up">⬆️</span></li>
+    <li>Le 3ème de Poule B joue un barrage contre le 3ème dernier de Poule A</li>
+  </ul>
+
+  <h3>Schéma des Poules (environ 10 joueurs par poule)</h3>
+
+  <!-- Tableau Poule A -->
+  <table class="table-poule">
+    <thead>
+      <tr><th>Poule A</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1er (playoffs mais déjà en demis)</td></tr>
+      <tr><td>2ème (playoffs mais déjà en demis)</td></tr>
+      <tr><td>3ème (playoffs contre le 6eme)</td></tr>
+      <tr><td>4ème (playoffs contre le 5eme)</td></tr>
+      <tr><td>5ème (playoffs contre le 4eme)</td></tr>
+      <tr><td>6ème (playoffs contre le 3eme)</td></tr>
+      <tr><td>7ème </td></tr>
+      <tr><td>8ème (barrage)</td></tr>
+      <tr><td>9ème <span class="arrow-down">⬇️</span></td></tr>
+      <tr><td>10ème <span class="arrow-down">⬇️</span></td></tr>
+    </tbody>
+  </table>
+
+  <!-- Tableau Poule B -->
+  <table class="table-poule">
+    <thead>
+      <tr><th>Poule B</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1er <span class="arrow-up">⬆️</span></td></tr>
+      <tr><td>2ème <span class="arrow-up">⬆️</span></td></tr>
+      <tr><td>3ème (barrage)</td></tr>
+      <tr><td>4ème</td></tr>
+      <tr><td>5ème</td></tr>
+      <tr><td>6ème</td></tr>
+      <tr><td>7ème</td></tr>
+      <tr><td>8ème</td></tr>
+      <tr><td>9ème</td></tr>
+      <tr><td>10ème</td></tr>
+    </tbody>
+  </table>
+
+</section>
+</main>
+
+<footer>
+  <p>Championnat de Fléchettes</p>
+</footer>
+
+</body>
+</html>

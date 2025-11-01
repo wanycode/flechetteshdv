@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Championnat 1</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<style>
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f4f7f8;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background: #00796b;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+header h1 {
+  margin: 0;
+}
+
+.menu li {
+  display: inline-block;
+  margin: 0 10px;
+}
+
+.menu a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.submenu {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.submenu a {
+  text-decoration: none;
+  color: #00796b;
+  font-weight: bold;
+  padding: 10px 20px;
+  border-radius: 25px;
+  background-color: #b2dfdb;
+  transition: all 0.3s ease;
+}
+
+.submenu a:hover {
+  background-color: #26a69a;
+  color: white;
+}
+
+.section {
+  max-width: 900px;
+  margin: 20px auto 40px auto;
+  padding: 25px;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+
+.section h2 {
+  color: #00796b;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.table-poule {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.table-poule th, .table-poule td {
+  border: 2px solid #00796b;
+  padding: 10px;
+  text-align: center;
+}
+
+.table-poule th {
+  background-color: #26a69a;
+  color: white;
+}
+
+.results ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.results li {
+  background: #e0f7fa;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 15px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  font-weight: bold;
+}
+
+footer {
+  background: #00796b;
+  color: white;
+  text-align: center;
+  padding: 15px;
+  margin-top: 30px;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1><i class="fas fa-trophy"></i> Championnat 1</h1>
+  <nav>
+    <ul class="menu">
+      <li><a href="index.html"><i class="fas fa-home"></i> Accueil</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="submenu">
+  <a href="#pouleA">Poule A</a>
+  <a href="#pouleB">Poule B</a>
+  <a href="#resultats">Résultats</a>
+</div>
+
+<main>
+<section class="section" id="pouleA">
+  <h2>Poule A</h2>
+  <table class="table-poule" id="tableA">
+    <thead><tr><th>Joueur</th><th>Score</th></tr></thead>
+    <tbody></tbody>
+  </table>
+</section>
+
+<section class="section" id="pouleB">
+  <h2>Poule B</h2>
+  <table class="table-poule" id="tableB">
+    <thead><tr><th>Joueur</th><th>Score</th></tr></thead>
+    <tbody></tbody>
+  </table>
+</section>
+
+<section class="section results" id="resultats">
+  <h2>Résultats</h2>
+  <ul id="results-list"></ul>
+</section>
+</main>
+
+<footer>
+  <p>Championnat de Fléchettes</p>
+</footer>
+
+<script>
+// Joueurs initiaux
+let joueursA = ["Joueur A1","Joueur A2","Joueur A3","Joueur A4","Joueur A5","Joueur A6","Joueur A7","Joueur A8","Joueur A9","Joueur A10"];
+let joueursB = ["Joueur B1","Joueur B2","Joueur B3","Joueur B4","Joueur B5","Joueur B6","Joueur B7","Joueur B8","Joueur B9","Joueur B10"];
+
+// Scores stockés
+let scoresA = JSON.parse(localStorage.getItem("champ1A")) || joueursA.map(j => Math.floor(Math.random()*301));
+let scoresB = JSON.parse(localStorage.getItem("champ1B")) || joueursB.map(j => Math.floor(Math.random()*301));
+
+// Afficher tableaux
+function displayTables() {
+  const tableABody = document.querySelector("#tableA tbody");
+  const tableBBody = document.querySelector("#tableB tbody");
+  tableABody.innerHTML = "";
+  tableBBody.innerHTML = "";
+
+  joueursA.forEach((j, i) => {
+    let score = scoresA[i];
+    let row = document.createElement("tr");
+    row.innerHTML = `<td>${j}</td><td>${score}</td>`;
+    tableABody.appendChild(row);
+  });
+
+  joueursB.forEach((j, i) => {
+    let score = scoresB[i];
+    let row = document.createElement("tr");
+    row.innerHTML = `<td>${j}</td><td>${score}</td>`;
+    tableBBody.appendChild(row);
+  });
+}
+
+// Afficher résultats
+function displayResults() {
+  const resultsList = document.getElementById("results-list");
+  resultsList.innerHTML = "";
+
+  // Tri pour montée/descente
+  let sortedA = joueursA.map((j,i)=>({j,score:scoresA[i]})).sort((a,b)=>b.score-a.score);
+  let sortedB = joueursB.map((j,i)=>({j,score:scoresB[i]})).sort((a,b)=>b.score-a.score);
+
+  // Descente / Montée
+  let li = document.createElement("li");
+  li.innerHTML = `Descend en Poule B: ${sortedA.slice(-2).map(p=>p.j).join(", ")} ⬇️`;
+  resultsList.appendChild(li);
+
+  li = document.createElement("li");
+  li.innerHTML = `Monte en Poule A: ${sortedB.slice(0,2).map(p=>p.j).join(", ")} ⬆️`;
+  resultsList.appendChild(li);
+
+  li = document.createElement("li");
+  li.innerHTML = `Match de barrage: ${sortedB[2].j} vs ${sortedA[sortedA.length-3].j}`;
+  resultsList.appendChild(li);
+
+   li = document.createElement("li");
+  li.innerHTML = `Grand gagnant: ...`;
+  resultsList.appendChild(li);
+
+}
+
+displayTables();
+displayResults();
+</script>
+
+</body>
+</html>
