@@ -65,3 +65,82 @@ function updateRanking() {
     rankingList.appendChild(li);
   });
 }
+// ----- Remplir les listes de joueurs -----
+const selectJ1 = document.getElementById("joueur1");
+const selectJ2 = document.getElementById("joueur2");
+const allJoueurs = [...joueursA, ...joueursB];
+
+allJoueurs.forEach(j => {
+  const option1 = document.createElement("option");
+  option1.value = j; option1.textContent = j;
+  selectJ1.appendChild(option1);
+
+  const option2 = document.createElement("option");
+  option2.value = j; option2.textContent = j;
+  selectJ2.appendChild(option2);
+});
+
+// ----- Commencer le match -----
+const matchForm = document.getElementById("matchForm");
+const compteur = document.getElementById("compteurMatch");
+const matchTitre = document.getElementById("matchTitre");
+const nomJ1 = document.getElementById("nomJ1");
+const nomJ2 = document.getElementById("nomJ2");
+const scoreJ1 = document.getElementById("scoreJ1");
+const scoreJ2 = document.getElementById("scoreJ2");
+const ptsJ1 = document.getElementById("ptsJ1");
+const ptsJ2 = document.getElementById("ptsJ2");
+let valJ1, valJ2, maxScore;
+
+matchForm.addEventListener("submit", e => {
+  e.preventDefault();
+  const joueur1 = selectJ1.value;
+  const joueur2 = selectJ2.value;
+  if(joueur1 === joueur2) { alert("Choisis deux joueurs différents !"); return; }
+
+  valJ1 = valJ2 = 0;
+  maxScore = parseInt(document.getElementById("mode").value);
+
+  nomJ1.textContent = joueur1;
+  nomJ2.textContent = joueur2;
+  scoreJ1.textContent = valJ1;
+  scoreJ2.textContent = valJ2;
+  matchTitre.textContent = `${joueur1} vs ${joueur2} (${maxScore})`;
+  compteur.style.display = "block";
+  matchForm.style.display = "none";
+});
+
+// ----- Ajouter points -----
+document.getElementById("addJ1").addEventListener("click", () => {
+  let pts = parseInt(ptsJ1.value) || 0;
+  valJ1 += pts;
+  if(valJ1 > maxScore) valJ1 = maxScore;
+  scoreJ1.textContent = valJ1;
+  ptsJ1.value = "";
+});
+
+document.getElementById("addJ2").addEventListener("click", () => {
+  let pts = parseInt(ptsJ2.value) || 0;
+  valJ2 += pts;
+  if(valJ2 > maxScore) valJ2 = maxScore;
+  scoreJ2.textContent = valJ2;
+  ptsJ2.value = "";
+});
+
+// ----- Terminer le match -----
+document.getElementById("finMatch").addEventListener("click", () => {
+  let resultsList = document.getElementById("results-list");
+  const li = document.createElement("li");
+  let gagnant;
+  if(valJ1 >= maxScore && valJ1 >= valJ2) gagnant = nomJ1.textContent;
+  else if(valJ2 >= maxScore && valJ2 >= valJ1) gagnant = nomJ2.textContent;
+  else gagnant = "Match incomplet";
+
+  li.textContent = `${nomJ1.textContent} ${valJ1} - ${valJ2} ${nomJ2.textContent} → Gagnant: ${gagnant}`;
+  resultsList.appendChild(li);
+
+  // Reset pour nouveau match
+  compteur.style.display = "none";
+  matchForm.style.display = "block";
+  ptsJ1.value = ptsJ2.value = "";
+});

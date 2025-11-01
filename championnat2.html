@@ -165,9 +165,8 @@ let joueursA = ["Joueur A1","Joueur A2","Joueur A3","Joueur A4","Joueur A5","Jou
 let joueursB = ["Joueur B1","Joueur B2","Joueur B3","Joueur B4","Joueur B5","Joueur B6","Joueur B7","Joueur B8","Joueur B9","Joueur B10"];
 
 // Scores stockés
-let scoresA = JSON.parse(localStorage.getItem("champ2A")) || joueursA.map(j => Math.floor(Math.random()*301));
-let scoresB = JSON.parse(localStorage.getItem("champ2B")) || joueursB.map(j => Math.floor(Math.random()*301));
-
+let scoresA = [250, 180, 301, 210, 195, 270, 220, 160, 200, 190, 230]; // 11 joueurs
+let scoresB = [150, 200, 180, 220, 170, 210, 160, 190, 200, 180]; // 10 joueurs
 // Afficher tableaux
 function displayTables() {
   const tableABody = document.querySelector("#tableA tbody");

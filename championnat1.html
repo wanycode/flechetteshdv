@@ -15,7 +15,7 @@ body {
 }
 
 header {
-  background: #00796b;
+  background: #009483;
   color: white;
   padding: 20px;
   text-align: center;
@@ -161,12 +161,14 @@ footer {
 
 <script>
 // Joueurs initiaux
-let joueursA = ["Joueur A1","Joueur A2","Joueur A3","Joueur A4","Joueur A5","Joueur A6","Joueur A7","Joueur A8","Joueur A9","Joueur A10"];
+let joueursA = ["Thierry","Michel","Didier","Massika","Laurent","Lucien","Christian","Ali","Franck T","Jagdish","Yannick"];
 let joueursB = ["Joueur B1","Joueur B2","Joueur B3","Joueur B4","Joueur B5","Joueur B6","Joueur B7","Joueur B8","Joueur B9","Joueur B10"];
 
 // Scores stockés
-let scoresA = JSON.parse(localStorage.getItem("champ1A")) || joueursA.map(j => Math.floor(Math.random()*301));
-let scoresB = JSON.parse(localStorage.getItem("champ1B")) || joueursB.map(j => Math.floor(Math.random()*301));
+// Mets ici les scores manuellement
+let scoresA = [250, 180, 301, 210, 195, 270, 220, 160, 200, 190, 230]; // 11 joueurs
+let scoresB = [150, 200, 180, 220, 170, 210, 160, 190, 200, 180]; // 10 joueurs
+
 
 // Afficher tableaux
 function displayTables() {
@@ -201,19 +203,19 @@ function displayResults() {
 
   // Descente / Montée
   let li = document.createElement("li");
-  li.innerHTML = `Descend en Poule B: ${sortedA.slice(-2).map(p=>p.j).join(", ")} ⬇️`;
+  li.innerHTML = `Descend en Poule B : ${sortedA.slice(-2).map(p=>p.j).join(", ")} ⬇️`;
   resultsList.appendChild(li);
 
   li = document.createElement("li");
-  li.innerHTML = `Monte en Poule A: ${sortedB.slice(0,2).map(p=>p.j).join(", ")} ⬆️`;
+  li.innerHTML = `Monte en Poule A : ${sortedB.slice(0,2).map(p=>p.j).join(", ")} ⬆️`;
   resultsList.appendChild(li);
 
   li = document.createElement("li");
-  li.innerHTML = `Match de barrage: ${sortedB[2].j} vs ${sortedA[sortedA.length-3].j}`;
+  li.innerHTML = `Match de barrage : ${sortedB[2].j} vs ${sortedA[sortedA.length-3].j}`;
   resultsList.appendChild(li);
 
    li = document.createElement("li");
-  li.innerHTML = `Grand gagnant: ...`;
+  li.innerHTML = `Grand gagnant: Thierry `;
   resultsList.appendChild(li);
 
 }

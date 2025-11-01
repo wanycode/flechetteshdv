@@ -194,3 +194,237 @@ footer {
   margin-left: 20px;
   margin-bottom: 15px;
 }
+
+#matchForm div {
+  margin-bottom: 15px;
+}
+
+#matchForm label {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+#matchForm select, #matchForm input {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+#matchForm button {
+  padding: 8px 15px;
+  background-color: #009483;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#matchForm button:hover {
+  background-color: #00796b;
+}
+
+.compteurs {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin-top: 15px;
+}
+
+.compteurs div {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.compteurs h4 {
+  margin-bottom: 5px;
+}
+
+.compteurs div button {
+  margin-top: 5px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  border: none;
+  background-color: #009483;
+  color: white;
+  cursor: pointer;
+}
+
+.compteurs div button:hover {
+  background-color: #00796b;
+}
+
+#scoreJ1, #scoreJ2 {
+  font-size: 2em;
+  margin-bottom: 5px;
+}
+/* Style général */
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f4f7f8;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: #009483;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+header h1 {
+  margin: 0;
+}
+
+/* Menu */
+.menu {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 0 0;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.menu li a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 8px 12px;
+  border-radius: 12px;
+  transition: background 0.3s;
+}
+
+.menu li a:hover {
+  background-color: #00796b;
+}
+
+/* Section Nouveau Match */
+#nouveauMatch {
+  max-width: 600px;
+  margin: 30px auto;
+  background-color: white;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+
+#nouveauMatch h2 {
+  text-align: center;
+  color: #00796b;
+  margin-bottom: 25px;
+}
+
+/* Formulaire Match */
+.match-form label {
+  display: block;
+  margin-top: 15px;
+  font-weight: bold;
+  color: #00796b;
+}
+
+.match-form select {
+  width: 100%;
+  padding: 8px 12px;
+  margin-top: 5px;
+  border-radius: 12px;
+  border: 1px solid #00796b;
+  font-size: 1em;
+}
+
+.match-form button {
+  margin-top: 20px;
+  width: 100%;
+  padding: 12px;
+  background-color: #009483;
+  color: white;
+  font-size: 1.1em;
+  font-weight: bold;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.match-form button:hover {
+  background-color: #00796b;
+}
+
+/* Compteur */
+.counter {
+  background-color: #e0f7fa;
+  padding: 20px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.counter h3 {
+  color: #00796b;
+}
+
+.counter input {
+  padding: 8px;
+  font-size: 1em;
+  margin-right: 10px;
+  border-radius: 12px;
+  border: 1px solid #00796b;
+}
+
+.counter button {
+  padding: 8px 16px;
+  background-color: #009483;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.counter button:hover {
+  background-color: #00796b;
+}
+
+.counter p {
+  font-size: 1.1em;
+  margin: 10px 0 0 0;
+  font-weight: bold;
+  color: #00796b;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  background-color: #009483;
+  color: white;
+  padding: 15px;
+  margin-top: 30px;
+  box-shadow: 0 -4px 8px rgba(0,0,0,0.2);
+}
+/* Ajoute dans ton <style> existant */
+.counter { transition: background 0.5s; padding:20px; border-radius:15px; }
+.activePlayer { background:#d0f0e0; transition: background 0.5s; }
+.inactivePlayer { background:#e0e0e0; transition: background 0.5s; }
+.mult-btn.active { background:#00796b; color:white; font-weight:bold; }
+.joueur-actif {
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #4caf50;
+  padding: 5px 10px;
+  border-radius: 10px;
+  transition: background 0.3s;
+}
+
+.joueur-inactif {
+  color: #888888;
+}
+
+.mult-btn.active {
+  background-color: #e53935; /* rouge vif pour multiplicateur actif */
+  color: white;
+  font-weight: bold;
+  font-size: 1.1em;
+}

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nouveau Match - Championnat de Fléchettes</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<style>
+body { font-family: 'Roboto', sans-serif; background: #f4f7f8; margin:0; padding:0; transition: background 0.3s; }
+header { background: #009483; color:white; padding:20px; text-align:center; box-shadow:0 4px 8px rgba(0,0,0,0.2);}
+header h1 { margin:0; }
+.section { max-width:900px; margin:20px auto 40px auto; padding:25px; background:white; border-radius:20px; box-shadow:0 6px 15px rgba(0,0,0,0.1); }
+.section h2 { text-align:center; color:#00796b; margin-bottom:20px; }
+.match-form label, .match-form select { display:block; margin:10px 0; }
+.match-form button { background:#00796b; color:white; border:none; padding:10px 20px; border-radius:10px; cursor:pointer; }
+.match-form button:hover { background:#009483; }
+.counter { text-align:center; transition: background 0.3s; padding:20px; border-radius:15px; }
+.score-buttons button { width:50px; height:50px; margin:5px; font-weight:bold; border-radius:10px; border:none; cursor:pointer; background:#b2dfdb; transition: background 0.2s; }
+.score-buttons button:hover { background:#26a69a; color:white; }
+.mult-btn { margin:0 5px; padding:5px 15px; border:none; border-radius:8px; cursor:pointer; background:#b2dfdb; font-weight:bold; }
+.mult-btn.active { background:#e53935; color:white; font-weight:bold; font-size:1.1em; }
+.joueur-actif { font-weight:bold; color:#ffffff; background-color:#4caf50; padding:5px 10px; border-radius:10px; transition: background 0.3s; }
+.joueur-inactif { color:#888888; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🏆 Nouveau Match - Championnat 3 🎯</h1>
+</header>
+
+<section class="section" id="nouveauMatch">
+  <h2>Configuration du Match</h2>
+  <div class="match-form">
+    <label for="selectJ1">Joueur 1 :</label>
+    <select id="selectJ1"></select>
+
+    <label for="selectJ2">Joueur 2 :</label>
+    <select id="selectJ2"></select>
+
+    <label for="modeJeu">Mode :</label>
+    <select id="modeJeu">
+      <option value="101">101</option>
+      <option value="201">201</option>
+      <option value="301">301</option>
+      <option value="401">401</option>
+      <option value="501">501</option>
+      <option value="601">601</option>
+      <option value="701">701</option>
+      <option value="801">801</option>
+      <option value="901">901</option>
+      <option value="1001">1001</option>
+    </select>
+
+    <label for="sortie">Sortie :</label>
+    <select id="sortie">
+      <option value="simple">Simple</option>
+      <option value="double">Double</option>
+    </select>
+
+    <button id="startMatch">Démarrer le match</button>
+    <button id="annulerMatch">Annuler le match</button>
+    <button id="retourAccueil">Accueil</button>
+  </div>
+
+  <div class="counter" style="display:none; margin-top:20px;">
+    <h3>Compteur de fléchettes</h3>
+    <p id="joueurActuel">Au tour de : <span id="nomJoueur"></span> | Multiplicateur : <span id="multActif"></span></p>
+    <p id="lancerInfo">Points ce tour : 0 | Fléchettes restantes : 3</p>
+
+    <div class="multiplier-buttons" style="margin-bottom:10px;">
+      <button class="mult-btn active" data-mult="1">Simple</button>
+      <button class="mult-btn" data-mult="2">Double</button>
+      <button class="mult-btn" data-mult="3">Triple</button>
+    </div>
+
+    <div class="score-buttons"></div>
+
+    <p id="scoreJ1"></p>
+    <p id="scoreJ2"></p>
+  </div>
+</section>
+
+<!-- Son fléchette -->
+<audio id="soundThrow">
+  <source src="https://actions.google.com/sounds/v1/impacts/wood_plank_flicks.ogg" type="audio/ogg">
+</audio>
+
+<script>
+// Liste de joueurs existante
+let joueursA = ["Thierry","Michel","Didier","Massika","Laurent","Lucien","Christian","Ali","Franck T","Jagdish","Yannick"];
+let joueursB = ["Joueur B1","Joueur B2","Joueur B3","Joueur B4","Joueur B5","Joueur B6","Joueur B7","Joueur B8","Joueur B9","Joueur B10"];
+const allJoueurs = [...joueursA, ...joueursB];
+
+// Remplir les selects
+const selectJ1 = document.getElementById("selectJ1");
+const selectJ2 = document.getElementById("selectJ2");
+allJoueurs.forEach(j => {
+  let opt1 = document.createElement("option"); opt1.value = j; opt1.textContent = j; selectJ1.appendChild(opt1);
+  let opt2 = document.createElement("option"); opt2.value = j; opt2.textContent = j; selectJ2.appendChild(opt2);
+});
+
+// Variables match
+let scoreJoueur1, scoreJoueur2, joueur1, joueur2;
+let joueurTour = 1;
+let multiplicateur = 1;
+let flechettesRestantes = 3;
+let pointsTour = 0;
+
+const scoreContainer = document.querySelector(".score-buttons");
+const counterDiv = document.querySelector(".counter");
+const sound = document.getElementById("soundThrow");
+
+// Créer boutons 0→20 + 25
+for(let i=0;i<=20;i++){
+  let btn = document.createElement("button");
+  btn.textContent=i;
+  btn.dataset.score=i;
+  scoreContainer.appendChild(btn);
+}
+let btn25 = document.createElement("button");
+btn25.textContent="25";
+btn25.dataset.score=25;
+scoreContainer.appendChild(btn25);
+
+// Boutons multiplicateurs
+document.querySelectorAll(".mult-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    multiplicateur = parseInt(btn.dataset.mult);
+    document.querySelectorAll(".mult-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    updateTour();
+  });
+});
+
+// Fonction pour afficher joueur et multiplicateur
+function updateTour(){
+  const nomJ = document.getElementById("nomJoueur");
+  const mult = document.getElementById("multActif");
+
+  // Joueur actif
+  if(joueurTour===1) {
+    nomJ.textContent = joueur1;
+    nomJ.className = "joueur-actif";
+  } else {
+    nomJ.textContent = joueur2;
+    nomJ.className = "joueur-actif";
+  }
+
+  // Multiplicateur actif
+  const multBtn = document.querySelector(".mult-btn.active");
+  mult.textContent = multBtn.textContent;
+  mult.style.color = "#e53935"; // rouge
+}
+
+function updateInfo(){
+  document.getElementById("lancerInfo").textContent = `Points ce tour : ${pointsTour} | Fléchettes restantes : ${flechettesRestantes}`;
+}
+
+function changerJoueur(){
+  pointsTour=0; flechettesRestantes=3;
+  joueurTour = joueurTour===1 ? 2 :1;
+  updateTour();
+  updateInfo();
+  counterDiv.style.background = joueurTour===1 ? "#d0f0e0" : "#f0d0d0";
+}
+
+// Choix du score
+document.querySelectorAll(".score-buttons button").forEach(btn => {
+  btn.addEventListener("click", () => {
+    sound.currentTime=0; sound.play();
+    let baseScore = parseInt(btn.dataset.score);
+    if(baseScore===0 && multiplicateur>1) return;
+    if(baseScore===25 && multiplicateur===3) return;
+
+    let pts = baseScore * multiplicateur;
+    let currentScore = joueurTour===1 ? scoreJoueur1 : scoreJoueur2;
+    let sortie = document.getElementById("sortie").value;
+
+    if(sortie==="double" && currentScore-pts===0 && multiplicateur!==2){
+      pointsTour = 0; flechettesRestantes = 0; changerJoueur(); return;
+    }
+
+    if(currentScore - pts < 0){
+      pointsTour = 0; flechettesRestantes = 0; changerJoueur(); return;
+    }
+
+    pointsTour += pts;
+    flechettesRestantes--;
+    if(joueurTour===1) scoreJoueur1 -= pts; else scoreJoueur2 -= pts;
+
+    updateScores();
+    updateInfo();
+
+    if(joueurTour===1 && scoreJoueur1===0){ alert(joueur1+" a gagné !"); resetMatch(); return; }
+    if(joueurTour===2 && scoreJoueur2===0){ alert(joueur2+" a gagné !"); resetMatch(); return; }
+
+    if(flechettesRestantes===0) changerJoueur();
+  });
+});
+
+document.getElementById("startMatch").addEventListener("click", () => {
+  joueur1 = selectJ1.value;
+  joueur2 = selectJ2.value;
+  let totalPoints = parseInt(document.getElementById("modeJeu").value);
+  scoreJoueur1 = totalPoints;
+  scoreJoueur2 = totalPoints;
+  joueurTour = 1;
+  flechettesRestantes = 3;
+  pointsTour = 0;
+  multiplicateur = 1;
+
+  document.querySelector(".match-form").style.display = "none";
+  document.querySelector(".counter").style.display = "block";
+  updateTour();
+  updateInfo();
+  updateScores();
+  counterDiv.style.background="#d0f0e0"; // joueur 1 couleur initiale
+});
+
+document.getElementById("annulerMatch").addEventListener("click", resetMatch);
+document.getElementById("retourAccueil").addEventListener("click", () => location.href="index.html");
+
+function updateScores(){
+  document.getElementById("scoreJ1").textContent = joueur1+" : "+scoreJoueur1;
+  document.getElementById("scoreJ2").textContent = joueur2+" : "+scoreJoueur2;
+}
+
+function resetMatch(){
+  document.querySelector(".match-form").style.display = "block";
+  document.querySelector(".counter").style.display = "none";
+  flechettesRestantes=3; pointsTour=0; multiplicateur=1;
+  document.querySelectorAll(".mult-btn").forEach(b => b.classList.remove("active"));
+  document.querySelector(".mult-btn[data-mult='1']").classList.add("active");
+}
+</script>
+</body>
+</html>
