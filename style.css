@@ -428,3 +428,13 @@ footer {
   font-weight: bold;
   font-size: 1.1em;
 }
+#undoThrow {
+  background: #ff4444;
+  color: white;
+  margin-top: 10px;
+  transition: 0.3s;
+}
+#undoThrow:hover {
+  background: #ff0000;
+  transform: scale(1.05);
+}

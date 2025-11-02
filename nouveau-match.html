@@ -4,211 +4,131 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nouveau Match - Championnat de Fléchettes</title>
-<link rel="stylesheet" href="style.css">
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 <style>
-body { font-family: 'Roboto', sans-serif; background: #f4f7f8; margin:0; padding:0; transition: background 0.3s; }
-header { background: #009483; color:white; padding:20px; text-align:center; box-shadow:0 4px 8px rgba(0,0,0,0.2);}
-header h1 { margin:0; }
-.section { max-width:900px; margin:20px auto 40px auto; padding:25px; background:white; border-radius:20px; box-shadow:0 6px 15px rgba(0,0,0,0.1); }
-.section h2 { text-align:center; color:#00796b; margin-bottom:20px; }
-.match-form label, .match-form select { display:block; margin:10px 0; }
-.match-form button { background:#00796b; color:white; border:none; padding:10px 20px; border-radius:10px; cursor:pointer; }
-.match-form button:hover { background:#009483; }
-.counter { text-align:center; transition: background 0.3s; padding:20px; border-radius:15px; }
-.score-buttons button { width:50px; height:50px; margin:5px; font-weight:bold; border-radius:10px; border:none; cursor:pointer; background:#b2dfdb; transition: background 0.2s; }
-.score-buttons button:hover { background:#26a69a; color:white; }
-.mult-btn { margin:0 5px; padding:5px 15px; border:none; border-radius:8px; cursor:pointer; background:#b2dfdb; font-weight:bold; }
-.mult-btn.active { background:#ff4444; color:white; font-weight:bold; }
-@keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255,0,0,0.5); } 70% { box-shadow: 0 0 10px 10px rgba(255,0,0,0.2); } 100% { box-shadow: 0 0 0 0 rgba(255,0,0,0); } }
-.active-player { animation: pulse 0.6s ease-in-out; }
-.player-info { display:flex; justify-content:space-between; max-width:400px; margin:0 auto; padding:5px 10px; border-radius:10px; margin-bottom:5px; transition: background 0.3s; }
-.player-info span { font-weight:bold; }
+body {
+  background: radial-gradient(circle at top, #0d0d0d, #000);
+  color: #f5f5f5;
+  font-family: 'Poppins', sans-serif;
+}
+.card {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card:hover { transform: translateY(-5px); box-shadow: 0 0 35px rgba(255,255,255,0.2); }
+select, button { outline:none; transition:0.3s; }
+select { background: rgba(0,0,0,0.4); color:#fff; border:1px solid rgba(255,255,255,0.2); }
+select:focus { border-color:#00bcd4; box-shadow:0 0 8px #00bcd4; }
+button { background: linear-gradient(90deg,#00bcd4,#007bff); border-radius:8px; font-weight:600; color:white; padding:10px 16px; }
+button:hover { background: linear-gradient(90deg,#007bff,#00bcd4); transform:scale(1.05); }
 </style>
 </head>
-<body>
+<body class="flex flex-col items-center justify-center min-h-screen p-4">
 
-<header>
-  <h1>🏆 Nouveau Match - Championnat 3 🎯</h1>
-</header>
+<h1 class="text-3xl font-bold mb-8 text-center text-cyan-400 drop-shadow-lg">🎯 Nouveau Match</h1>
 
-<section class="section" id="nouveauMatch">
-  <h2>Configuration du Match</h2>
-  <div class="match-form">
-    <label for="selectJ1">Joueur 1 :</label>
-    <select id="selectJ1"></select>
-
-    <label for="selectJ2">Joueur 2 :</label>
-    <select id="selectJ2"></select>
-
-    <label for="modeJeu">Mode :</label>
-    <select id="modeJeu">
-      <option value="101">101</option>
-      <option value="201">201</option>
-      <option value="301" selected>301</option>
-      <option value="401">401</option>
-      <option value="501">501</option>
-      <option value="601">601</option>
-      <option value="701">701</option>
-      <option value="801">801</option>
-      <option value="901">901</option>
+<div class="card rounded-2xl p-6 w-full max-w-md text-center space-y-4">
+  <div>
+    <label for="selectJ1" class="block text-lg font-semibold mb-2 text-gray-300">Joueur 1</label>
+    <select id="selectJ1" class="w-full rounded-lg py-2 px-3"><option value="">Sélectionner un joueur</option></select>
+  </div>
+  <div>
+    <label for="selectJ2" class="block text-lg font-semibold mb-2 text-gray-300">Joueur 2</label>
+    <select id="selectJ2" class="w-full rounded-lg py-2 px-3"><option value="">Sélectionner un joueur</option></select>
+  </div>
+  <div>
+    <label for="selectJ3" class="block text-lg font-semibold mb-2 text-gray-300">Joueur 3 (facultatif)</label>
+    <select id="selectJ3" class="w-full rounded-lg py-2 px-3"><option value="">Aucun</option></select>
+  </div>
+  <div>
+    <label for="modeJeu" class="block text-lg font-semibold mb-2 text-gray-300">Mode de jeu</label>
+    <select id="modeJeu" class="w-full rounded-lg py-2 px-3">
+      <option value="101">101</option><option value="201">201</option><option value="301" selected>301</option>
+      <option value="401">401</option><option value="501">501</option><option value="601">601</option>
+      <option value="701">701</option><option value="801">801</option><option value="901">901</option>
       <option value="1001">1001</option>
     </select>
-
-    <label for="sortie">Sortie :</label>
-    <select id="sortie">
+  </div>
+  <div>
+    <label for="sortie" class="block text-lg font-semibold mb-2 text-gray-300">Sortie</label>
+    <select id="sortie" class="w-full rounded-lg py-2 px-3">
       <option value="simple">Simple</option>
       <option value="double">Double</option>
     </select>
-
-    <button id="startMatch">Démarrer le match</button>
-    <button id="annulerMatch">Annuler le match</button>
-    <button onclick="location.href='index.html'">Accueil</button>
   </div>
+  <div>
+  <label for="nbSets" class="block text-lg font-semibold mb-2 text-gray-300">Nombre de sets</label>
+  <select id="nbSets" class="w-full rounded-lg py-2 px-3">
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3" selected>3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+    <option value="6">6</option>
+    <option value="7">7</option>
+    <option value="8">8</option>
+    <option value="9">9</option>
+    <option value="10">10</option>
+  </select>
+</div>
 
-  <div class="counter" style="display:none; margin-top:20px;">
-    <h3>Compteur de fléchettes</h3>
-    <p id="joueurActuel"></p>
-    <p id="lancerInfo">Points ce tour : 0 | Fléchettes restantes : 3</p>
-
-    <div class="multiplier-buttons" style="margin-bottom:10px;">
-      <button class="mult-btn active" data-mult="1">Simple</button>
-      <button class="mult-btn" data-mult="2">Double</button>
-      <button class="mult-btn" data-mult="3">Triple</button>
-    </div>
-
-    <div class="score-buttons"></div>
-
-    <div id="scoreContainer">
-      <div id="player1Info" class="player-info"><span id="scoreJ1"></span><span id="avgJ1"></span></div>
-      <div id="player2Info" class="player-info"><span id="scoreJ2"></span><span id="avgJ2"></span></div>
-    </div>
+  <div class="flex gap-3 justify-center">
+    <button id="startMatch" class="flex-1">🚀 Démarrer</button>
+    <button id="annulerMatch" class="flex-1 bg-gray-600 hover:bg-gray-500">❌ Annuler</button>
   </div>
-</section>
+</div>
 
-<audio id="soundThrow">
-  <source src="https://actions.google.com/sounds/v1/impacts/wood_plank_flicks.ogg" type="audio/ogg">
-</audio>
+<button onclick="location.href='index.html'" class="mt-6 bg-gray-700 hover:bg-gray-600 text-white py-2 px-6 rounded-lg">⬅️ Retour à l’accueil</button>
 
 <script>
-// Liste joueurs
 let joueursA = ["Thierry","Michel","Didier","Massika","Laurent","Lucien","Christian","Ali","Franck T","Jagdish","Yannick"];
 let joueursB = ["Joueur B1","Joueur B2","Joueur B3","Joueur B4","Joueur B5","Joueur B6","Joueur B7","Joueur B8","Joueur B9","Joueur B10"];
 const allJoueurs = [...joueursA, ...joueursB];
 
-// Remplir selects
 const selectJ1 = document.getElementById("selectJ1");
 const selectJ2 = document.getElementById("selectJ2");
-allJoueurs.forEach(j => {
-  let opt1 = document.createElement("option"); opt1.value=j; opt1.textContent=j; selectJ1.appendChild(opt1);
-  let opt2 = document.createElement("option"); opt2.value=j; opt2.textContent=j; selectJ2.appendChild(opt2);
-});
-
-// Variables
-let scoreJoueur1, scoreJoueur2, joueur1, joueur2;
-let joueurTour=1, multiplicateur=1, flechettesRestantes=3, pointsTour=0;
-let totalLancersJ1=0, totalPtsJ1=0, totalLancersJ2=0, totalPtsJ2=0;
-
-const scoreContainer = document.querySelector(".score-buttons");
-const counterDiv = document.querySelector(".counter");
-const sound = document.getElementById("soundThrow");
-const player1Div = document.getElementById("player1Info");
-const player2Div = document.getElementById("player2Info");
-
-// Création boutons 0→20 +25
-for(let i=0;i<=20;i++){ let btn=document.createElement("button"); btn.textContent=i; btn.dataset.score=i; scoreContainer.appendChild(btn);}
-let btn25 = document.createElement("button"); btn25.textContent="25"; btn25.dataset.score=25; scoreContainer.appendChild(btn25);
-
-// Multiplicateurs
-document.querySelectorAll(".mult-btn").forEach(btn=>{
-  btn.addEventListener("click", ()=>{
-    multiplicateur=parseInt(btn.dataset.mult);
-    document.querySelectorAll(".mult-btn").forEach(b=>b.classList.remove("active"));
-    btn.classList.add("active");
-    updateInfo();
+const selectJ3 = document.getElementById("selectJ3");
+allJoueurs.forEach(j=>{
+  [selectJ1, selectJ2, selectJ3].forEach(sel=>{
+    let opt=document.createElement("option"); opt.value=j; opt.textContent=j; sel.appendChild(opt);
   });
 });
 
-function updateInfo(){
-  document.getElementById("lancerInfo").textContent=`Points ce tour : ${pointsTour} | Fléchettes restantes : ${flechettesRestantes} | Multiplicateur : ${multiplicateur}x`;
-}
+document.getElementById("startMatch").addEventListener("click",()=>{
+  const j1=selectJ1.value, j2=selectJ2.value, j3=selectJ3.value;
+  const mode=document.getElementById("modeJeu").value;
+  const sortie=document.getElementById("sortie").value;
+  const sets=parseInt(document.getElementById("nbSets").value);
 
-function changerJoueur(){
-  pointsTour=0; flechettesRestantes=3;
-  joueurTour = joueurTour===1 ? 2 :1;
-  document.getElementById("joueurActuel").textContent="Au tour de : "+(joueurTour===1?joueur1:joueur2);
-  updateInfo();
-  updateScores();
-  if(joueurTour===1){ counterDiv.style.background="#d0f0e0"; player1Div.classList.add("active-player"); player2Div.classList.remove("active-player");}
-  else{ counterDiv.style.background="#f0d0d0"; player2Div.classList.add("active-player"); player1Div.classList.remove("active-player");}
-}
+  if(!j1||!j2){ alert("Veuillez sélectionner au moins les 2 premiers joueurs !"); return; }
+  if(j1===j2||j1===j3||j2===j3){ alert("Tous les joueurs doivent être différents !"); return; }
 
-function updateScores(){
-  document.getElementById("scoreJ1").textContent=joueur1+": "+scoreJoueur1;
-  document.getElementById("scoreJ2").textContent=joueur2+": "+scoreJoueur2;
-  document.getElementById("avgJ1").textContent="Moy: "+(totalLancersJ1?Math.round(totalPtsJ1/totalLancersJ1*100)/100:0);
-  document.getElementById("avgJ2").textContent="Moy: "+(totalLancersJ2?Math.round(totalPtsJ2/totalLancersJ2*100)/100:0);
-}
+  const joueursMatch=[j1,j2]; if(j3) joueursMatch.push(j3);
 
-// Score boutons
-document.querySelectorAll(".score-buttons button").forEach(btn=>{
-  btn.addEventListener("click", ()=>{
-    sound.currentTime=0; sound.play();
-    let baseScore=parseInt(btn.dataset.score);
-    if(baseScore===0 && multiplicateur>1) return;
-    if(baseScore===25 && multiplicateur===3) return;
-    let pts = baseScore*multiplicateur;
-    let currentScore = joueurTour===1?scoreJoueur1:scoreJoueur2;
-    let sortie = document.getElementById("sortie").value;
+  const matchData={
+    joueurs:joueursMatch,
+    mode:parseInt(mode),
+    sortie:sortie,
+    sets:sets,
+    currentSet:1,
+    scores:joueursMatch.map(()=>parseInt(mode)),
+    setsWon:joueursMatch.map(()=>0),
+    stats:joueursMatch.map(()=>({pts:0,lancers:0,doubles:0,triples:0}))
+  };
 
-    if(sortie==="double" && currentScore-pts===0 && multiplicateur!==2){
-      pointsTour=0; flechettesRestantes=0; changerJoueur(); return;
-    }
-
-    if(currentScore-pts<0){ pointsTour=0; flechettesRestantes=0; changerJoueur(); return; }
-
-    pointsTour+=pts; flechettesRestantes--;
-    if(joueurTour===1){ scoreJoueur1-=pts; totalLancersJ1++; totalPtsJ1+=pts;}
-    else{ scoreJoueur2-=pts; totalLancersJ2++; totalPtsJ2+=pts;}
-
-    updateScores(); updateInfo();
-
-    if(joueurTour===1 && scoreJoueur1===0){ alert(joueur1+" a gagné !"); resetMatch(); return;}
-    if(joueurTour===2 && scoreJoueur2===0){ alert(joueur2+" a gagné !"); resetMatch(); return;}
-
-    if(flechettesRestantes===0) changerJoueur();
-  });
+  localStorage.setItem("matchData",JSON.stringify(matchData));
+  window.location.href="compteur.html";
 });
 
-// Start match
-document.getElementById("startMatch").addEventListener("click", ()=>{
-  joueur1=selectJ1.value; joueur2=selectJ2.value;
-  let totalPoints=parseInt(document.getElementById("modeJeu").value);
-  scoreJoueur1=totalPoints; scoreJoueur2=totalPoints;
-  totalLancersJ1=0; totalPtsJ1=0; totalLancersJ2=0; totalPtsJ2=0;
-  joueurTour=1; flechettesRestantes=3; pointsTour=0; multiplicateur=1;
-
-  document.querySelector(".match-form").style.display="none";
-  document.querySelector(".counter").style.display="block";
-  document.getElementById("joueurActuel").textContent="Au tour de : "+joueur1;
-  player1Div.classList.add("active-player"); player2Div.classList.remove("active-player");
-  counterDiv.style.background="#d0f0e0";
-  updateInfo(); updateScores();
+document.getElementById("annulerMatch").addEventListener("click",()=>{
+  selectJ1.value=""; selectJ2.value=""; selectJ3.value="";
+  document.getElementById("modeJeu").value="301";
+  document.getElementById("sortie").value="simple";
+  document.getElementById("nbSets").value="3";
 });
-
-// Annuler match
-document.getElementById("annulerMatch").addEventListener("click", ()=>{
-  resetMatch();
-});
-
-function resetMatch(){
-  document.querySelector(".match-form").style.display="block";
-  document.querySelector(".counter").style.display="none";
-  flechettesRestantes=3; pointsTour=0; multiplicateur=1;
-  totalLancersJ1=0; totalPtsJ1=0; totalLancersJ2=0; totalPtsJ2=0;
-  player1Div.classList.remove("active-player"); player2Div.classList.remove("active-player");
-}
 </script>
 </body>
 </html>

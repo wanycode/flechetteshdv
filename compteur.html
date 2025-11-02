@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎯 Compteur 3D Fléchettes - Version Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<style>
+/* ------------------- FOND ------------------- */
+body {
+  margin:0;
+  padding:0;
+  font-family:'Roboto',sans-serif;
+  background: radial-gradient(circle at top,#0b0c1a,#06080f);
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  min-height:100vh;
+  color:#fff;
+}
+
+/* Arène animée */
+#arena {
+  position:fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  z-index:-1;
+  background: radial-gradient(circle,#0a0f2c,#000);
+  animation: pulseBG 10s infinite alternate;
+}
+@keyframes pulseBG {
+  0% { background: radial-gradient(circle,#0a0f2c,#000);}
+  50% { background: radial-gradient(circle,#120d36,#020012);}
+  100% { background: radial-gradient(circle,#0a0f2c,#000);}
+}
+
+/* ------------------- HEADER ------------------- */
+header{
+  text-align:center;
+  font-family:'Orbitron',sans-serif;
+  font-size:2rem;
+  margin-top:20px;
+  color:#00f6ff;
+  text-shadow: 0 0 15px #00f6ff,0 0 30px #00f6ff;
+}
+
+/* ------------------- CONTAINER ------------------- */
+.container{
+  background: rgba(10,10,15,0.6);
+  border-radius:25px;
+  padding:30px;
+  margin-top:30px;
+  width:90%;
+  max-width:900px;
+  text-align:center;
+  backdrop-filter: blur(15px);
+  box-shadow:0 0 40px rgba(0,255,255,0.3);
+  animation: glowBorder 3s infinite alternate;
+}
+@keyframes glowBorder {
+  0% { box-shadow:0 0 30px rgba(0,255,255,0.3);}
+  50% { box-shadow:0 0 60px rgba(0,255,255,0.7);}
+  100% { box-shadow:0 0 30px rgba(0,255,255,0.3);}
+}
+
+/* ------------------- JOUEURS 3D ------------------- */
+.players{
+  display:flex;
+  justify-content:space-around;
+  margin-bottom:20px;
+  perspective:1000px;
+}
+.player{
+  flex:1;
+  margin:0 10px;
+  padding:20px;
+  border-radius:20px;
+  background: rgba(0,0,0,0.3);
+  transition: transform 0.6s, box-shadow 0.6s, background 0.6s;
+  transform-style: preserve-3d;
+  position:relative;
+  cursor:pointer;
+}
+.player.active{
+  transform: rotateY(5deg) scale(1.1);
+  box-shadow:0 0 50px #fff inset,0 0 30px #0ff;
+}
+.player h2{
+  font-family:'Orbitron',sans-serif;
+  font-size:1.8rem;
+  margin:0 0 10px 0;
+  text-shadow:0 0 10px #0ff;
+}
+.player p{
+  margin:5px 0;
+  font-size:1.2rem;
+}
+
+/* Couleurs uniques par joueur */
+.player0 { background:#ff4444; }
+.player1 { background:#44ff44; }
+.player2 { background:#4444ff; }
+.player3 { background:#ff44ff; }
+
+/* ------------------- MULTIPLICATEURS ------------------- */
+.mult-btn{
+  margin:0 8px;
+  padding:10px 22px;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+  background: rgba(0,255,255,0.2);
+  color:white;
+  font-weight:bold;
+  font-family:'Orbitron',sans-serif;
+  transition:0.3s;
+}
+.mult-btn.active{
+  background:#ff44ff;
+  box-shadow:0 0 15px #ff44ff;
+}
+
+/* ------------------- BOUTONS SCORES ------------------- */
+.score-buttons button{
+  width:60px;
+  height:60px;
+  margin:5px;
+  border:none;
+  border-radius:15px;
+  background: rgba(0,255,255,0.2);
+  color:white;
+  font-size:20px;
+  cursor:pointer;
+  font-weight:bold;
+  transition:0.3s;
+  font-family:'Orbitron',sans-serif;
+}
+.score-buttons button:hover{
+  background:#00ffff;
+  transform:scale(1.1);
+}
+
+/* ------------------- INFOS ------------------- */
+#lancerInfo,#modeInfo{
+  margin-top:12px;
+  font-size:1.2rem;
+  background: rgba(0,0,0,0.2);
+  padding:10px 15px;
+  border-radius:12px;
+  font-family:'Orbitron',sans-serif;
+}
+
+/* ------------------- BOUTONS GÉNÉRAUX ------------------- */
+.buttons button{
+  background:#00ffff;
+  color:#000;
+  border:none;
+  padding:12px 24px;
+  margin:8px;
+  border-radius:15px;
+  cursor:pointer;
+  font-weight:bold;
+  font-family:'Orbitron',sans-serif;
+  transition:0.3s;
+}
+.buttons button:hover{
+  background:#00bfff;
+  transform:scale(1.1);
+}
+</style>
+</head>
+<body>
+<div id="arena"></div>
+<header>🎯 Compteur 3D Fléchettes Pro</header>
+
+<div class="container">
+  <div class="players" id="playersContainer"></div>
+  <p id="modeInfo">Mode : 301 | Sortie : Simple | Set : 1/3</p>
+  <p id="lancerInfo">Points ce tour : 0 | Fléchettes restantes : 3</p>
+
+  <div class="multiplier-buttons">
+    <button class="mult-btn active" data-mult="1">Simple</button>
+    <button class="mult-btn" data-mult="2">Double</button>
+    <button class="mult-btn" data-mult="3">Triple</button>
+  </div>
+
+  <div class="score-buttons"></div>
+
+  <div class="buttons">
+    <button id="undoThrow">↩️ Annuler le dernier lancé</button>
+    <button id="resetMatch">❌ Annuler le match</button>
+  </div>
+</div>
+
+<audio id="soundThrow">
+  <source src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg" type="audio/ogg">
+</audio>
+
+<script src="script.js"></script>
+<script>
+// -------------------- COULEURS JOUEURS --------------------
+const colors = ["#ff4444","#44ff44","#4444ff","#ff44ff"];
+document.querySelectorAll(".player").forEach((p,i)=>p.style.background=colors[i%colors.length]);
+
+// -------------------- CONFETTI --------------------
+function confettiSet() {
+  confetti({
+    particleCount: 100,
+    spread: 120,
+    origin: { y: 0.6 },
+    colors: colors
+  });
+}
+
+// -------------------- BOUTONS --------------------
+document.getElementById("undoThrow").addEventListener("click",()=>undoLastThrow());
+document.getElementById("resetMatch").addEventListener("click",()=> {
+  if(confirm("Voulez-vous vraiment annuler le match ?")){
+    localStorage.removeItem("matchData");
+    window.location.href="nouveau-match.html";
+  }
+});
+</script>
+</body>
+</html>
